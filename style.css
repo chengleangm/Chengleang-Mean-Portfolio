@@ -900,7 +900,12 @@ a {
 
 @media (max-width: 768px) {
   .reveal {
-    transition: opacity 0.35s ease, transform 0.35s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  /* Show first batch of reveals immediately on mobile */
+  .reveal:nth-child(-n+6) {
+    transition-delay: 0ms !important;
   }
 }
 
