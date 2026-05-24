@@ -1,5 +1,8 @@
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const hasFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+const effectiveType = navigator.connection?.effectiveType || "4g";
+const isSlowConnection = effectiveType === "2g" || effectiveType === "3g" || effectiveType === "4g";
 
 const clamp = (number, min, max) => Math.min(Math.max(number, min), max);
 const roundTo = (value, precision = 3) => parseFloat(value.toFixed(precision));
@@ -31,7 +34,9 @@ function initRevealAnimation() {
   );
 
   revealItems.forEach((item, index) => {
-    item.style.transitionDelay = `${Math.min(index * 35, 220)}ms`;
+    // Reduce animation stagger on mobile or slow connections
+    const staggerDelay = (isMobile || isSlowConnection) ? Math.min(index * 15, 80) : Math.min(index * 35, 220);
+    item.style.transitionDelay = `${staggerDelay}ms`;
     observer.observe(item);
   });
 }
