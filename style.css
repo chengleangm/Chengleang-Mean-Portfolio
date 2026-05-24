@@ -10,6 +10,12 @@ html {
   text-size-adjust: 100%;
 }
 
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   margin: 0;
   font-family: "JetBrains Mono", "Consolas", "Courier New", monospace;
@@ -883,11 +889,19 @@ a {
   opacity: 0;
   transform: translateY(36px);
   transition: opacity 0.75s ease, transform 0.75s ease;
+  will-change: opacity, transform;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+  will-change: auto;
+}
+
+@media (max-width: 768px) {
+  .reveal {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
 }
 
 .skills-grid span {

@@ -4,6 +4,18 @@ const isMobile = window.matchMedia("(max-width: 768px)").matches;
 const effectiveType = navigator.connection?.effectiveType || "4g";
 const isSlowConnection = effectiveType === "2g" || effectiveType === "3g" || effectiveType === "4g";
 
+let isScrolling = false;
+let scrollTimeout;
+
+// Track scroll state for performance optimization
+window.addEventListener('scroll', () => {
+  isScrolling = true;
+  clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(() => {
+    isScrolling = false;
+  }, 150);
+}, { passive: true });
+
 const clamp = (number, min, max) => Math.min(Math.max(number, min), max);
 const roundTo = (value, precision = 3) => parseFloat(value.toFixed(precision));
 const mapRange = (value, fromMin, fromMax, toMin, toMax) => {
@@ -21,6 +33,9 @@ function initRevealAnimation() {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
+        // Skip animations during active scrolling on mobile for smooth scroll
+        if (isScrolling && isMobile) return;
+        
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
           observer.unobserve(entry.target);
