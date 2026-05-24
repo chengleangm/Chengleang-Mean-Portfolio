@@ -28,8 +28,8 @@ function initRevealAnimation() {
       });
     },
     {
-      threshold: 0.16,
-      rootMargin: "0px 0px -60px 0px"
+      threshold: isMobile ? 0.08 : 0.16,
+      rootMargin: isMobile ? "0px 0px -40px 0px" : "0px 0px -60px 0px"
     }
   );
 
@@ -42,7 +42,8 @@ function initRevealAnimation() {
 }
 
 function initTiltCards() {
-  if (prefersReducedMotion || !hasFinePointer) return;
+  // Disable tilt on mobile or slow connections - too heavy for performance
+  if (prefersReducedMotion || !hasFinePointer || isMobile || isSlowConnection) return;
 
   const tiltItems = document.querySelectorAll(".tilt-card");
 
@@ -112,7 +113,8 @@ function initHeroLight() {
   const hero = document.querySelector(".hero-section");
   const cursorLight = document.querySelector(".cursor-light");
 
-  if (!hero || !cursorLight || prefersReducedMotion || !hasFinePointer) return;
+  // Disable on mobile or slow connections for better performance
+  if (!hero || !cursorLight || prefersReducedMotion || !hasFinePointer || isMobile || isSlowConnection) return;
 
   let frame = null;
   let lastEvent = null;
@@ -355,7 +357,7 @@ function createGlobalMusicPlayer() {
       <span data-music-progress-length></span>
     </button>
     <span class="global-music-time" data-music-duration>00:00</span>
-    <audio data-local-music src="rodeo-remix.mp3" preload="metadata"></audio>
+    <audio data-local-music src="rodeo-remix.mp3" preload="${isMobile ? 'none' : 'metadata'}"></audio>
   `;
 
   document.body.appendChild(player);
