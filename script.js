@@ -33,9 +33,6 @@ function initRevealAnimation() {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        // Skip animations during active scrolling on mobile for smooth scroll
-        if (isScrolling && isMobile) return;
-        
         if (entry.isIntersecting) {
           entry.target.classList.add("is-visible");
           observer.unobserve(entry.target);
