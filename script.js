@@ -2,7 +2,7 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 const hasFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
 const effectiveType = navigator.connection?.effectiveType || "4g";
-const isSlowConnection = effectiveType === "2g" || effectiveType === "3g" || effectiveType === "4g";
+const isSlowConnection = effectiveType === "slow-2g" || effectiveType === "2g" || effectiveType === "3g";
 
 const clamp = (number, min, max) => Math.min(Math.max(number, min), max);
 const roundTo = (value, precision = 3) => parseFloat(value.toFixed(precision));
@@ -12,6 +12,11 @@ const mapRange = (value, fromMin, fromMax, toMin, toMax) => {
 
 function initRevealAnimation() {
   const revealItems = document.querySelectorAll(".reveal");
+
+  if (!("IntersectionObserver" in window)) {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+    return;
+  }
 
   if (prefersReducedMotion) {
     revealItems.forEach((item) => item.classList.add("is-visible"));
@@ -132,14 +137,14 @@ function initHeroLight() {
     frame = requestAnimationFrame(() => {
       if (!lastEvent) return;
 
-    cursorLight.classList.add("is-visible");
+      cursorLight.classList.add("is-visible");
       cursorLight.style.transform = `translate3d(${lastEvent.clientX - 190}px, ${lastEvent.clientY - 190}px, 0)`;
 
       const x = clamp(((lastEvent.clientX - heroRect.left) / heroRect.width) * 100, 0, 100);
       const y = clamp(((lastEvent.clientY - heroRect.top) / heroRect.height) * 100, 0, 100);
 
-    hero.style.setProperty("--hero-x", `${x}%`);
-    hero.style.setProperty("--hero-y", `${y}%`);
+      hero.style.setProperty("--hero-x", `${x}%`);
+      hero.style.setProperty("--hero-y", `${y}%`);
       frame = null;
     });
   });

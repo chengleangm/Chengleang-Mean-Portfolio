@@ -25,9 +25,31 @@ body {
   line-height: 1.5;
 }
 
+body::selection {
+  background: rgba(116, 212, 255, 0.32);
+  color: #fff;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(116, 212, 255, 0.88);
+  outline-offset: 4px;
 }
 
 .cursor-light {
@@ -68,6 +90,7 @@ a {
 .logo {
   font-size: 20px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .nav-links {
@@ -78,15 +101,36 @@ a {
 }
 
 .nav-links a {
+  position: relative;
   white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
   color: #fff;
 }
 
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 2px;
+  border-radius: 999px;
+  background: #74d4ff;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
 .nav-links a.active {
   color: #74d4ff;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+  transform: scaleX(1);
 }
 
 .page-hero {
@@ -244,11 +288,13 @@ a {
 .primary-btn {
   background: #2db8ff;
   color: #071018;
+  border: 1px solid rgba(45, 184, 255, 0.85);
 }
 
 .secondary-btn {
   border: 1px solid rgba(255, 255, 255, 0.24);
   color: #fff;
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .hero-panel {
@@ -353,7 +399,7 @@ a {
   height: 300px;
   background: #111;
   overflow: hidden;
-  border-radius: 20px;
+  border-radius: 8px;
   transform-style: preserve-3d;
   transition: transform 0.18s ease, box-shadow 0.35s ease;
   box-shadow: 0 20px 40px rgba(0,0,0,0.5);
@@ -390,11 +436,12 @@ a {
   transform: translateZ(42px);
 }
 
-.card-info h1 {
+.card-info h1,
+.card-info h3 {
   max-width: 270px;
   font-size: 28px;
   line-height: 1.1;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
@@ -530,6 +577,7 @@ a {
   border-radius: 8px;
   background: rgba(45, 184, 255, 0.14);
   color: #8cddff;
+  border: 1px solid rgba(45, 184, 255, 0.2);
 }
 
 .project-ring-section {
@@ -749,6 +797,7 @@ a {
 .portfolio-music-bar span {
   display: block;
   width: 0%;
+  min-width: 0;
   height: 100%;
   border-radius: inherit;
   background: #2db8ff;
@@ -762,7 +811,10 @@ a {
 
 .portfolio-icon-button,
 .portfolio-play-button {
+  display: inline-grid;
+  place-items: center;
   border: 0;
+  border-radius: 8px;
   background: transparent;
   cursor: pointer;
   opacity: 0.68;
@@ -871,7 +923,9 @@ a {
 }
 
 .global-music-progress span {
+  display: block;
   width: 0%;
+  min-width: 0;
   height: 100%;
   border-radius: inherit;
   background: #2db8ff;
@@ -1734,12 +1788,17 @@ a {
   }
 
   .nav-links a {
+    position: static;
     min-height: 40px;
     display: inline-flex;
     align-items: center;
     padding: 0 12px;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.05);
+  }
+
+  .nav-links a::after {
+    display: none;
   }
 
   .hero-section,
@@ -1768,7 +1827,7 @@ a {
 
   .card {
     width: 100%;
-    max-width: 360px;
+    max-width: 420px;
     height: clamp(280px, 82vw, 340px);
   }
 
@@ -1861,6 +1920,7 @@ a {
   .project-card a,
   .service-detail-card a {
     width: 100%;
+    min-width: 0;
   }
 
   .hero-panel,
@@ -1880,7 +1940,8 @@ a {
     padding: 18px;
   }
 
-  .card-info h1 {
+  .card-info h1,
+  .card-info h3 {
     font-size: 24px;
   }
 
